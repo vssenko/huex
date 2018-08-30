@@ -16,7 +16,7 @@ Just clone this Repository and add it as external module in your package.json fi
 npm run test
 ```
 
-##Usage
+## Usage
 
 Require Huex where you need.
 Then instantiate it.
