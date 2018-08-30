@@ -1,11 +1,4 @@
-let EventEmmiter;
-
-if (require) {
-  EventEmmiter = require('events').EventEmitter;
-} else {
-  //TODO: write solution for FE
-  EventEmmiter = class { }
-}
+const EventEmmiter = require('events').EventEmitter;
 
 const proxySettings = {
   get(target, prop) {
