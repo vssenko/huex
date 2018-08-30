@@ -23,10 +23,21 @@ describe('Huex', () => {
     assert.equal(sut.a.b.c, 5);
   });
 
-  it('should fire event on value change', (done) => {
+  it('should fire change:name event on value change', (done) => {
     sut.on('change:a', (e) => {
       assert.equal(e.value, 5);
       done();
+    });
+
+    sut.a = 5;
+  });
+
+  it('should fire change event on value change', (done) => {
+    sut.on('change', (e) => {
+      if (e.key === 'a') {
+        assert.equal(e.value, 5);
+        done();
+      }
     });
 
     sut.a = 5;

@@ -15,6 +15,7 @@ const proxySettings = {
 
     target[prop] = value;
     target.emit('change:' + prop, { value });
+    target.emit('change', { key: prop, value })
     return true;
   }
 }
