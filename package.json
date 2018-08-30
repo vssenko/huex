@@ -1,0 +1,23 @@
+{
+  "name": "huex",
+  "version": "1.0.0",
+  "description": "Super slim and easy data storage. Like Redux\\Vuex, but with ease.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./app/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vssenko/huex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vssenko/huex/issues"
+  },
+  "homepage": "https://github.com/vssenko/huex#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
