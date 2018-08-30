@@ -26,9 +26,7 @@ const proxySettings = {
   }
 }
 
-function huex(obj) {
-  // obj = obj || {};
-  // Object.setPrototypeOf(obj, new EventEmmiter());
+function huex() {
   obj = new EventEmmiter();
   const storage = new Proxy(obj, proxySettings);
   return storage;

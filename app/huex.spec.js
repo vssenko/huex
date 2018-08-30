@@ -31,4 +31,13 @@ describe('Huex', () => {
 
     sut.a = 5;
   });
+
+  it('should fire events on nested objects', (done) => {
+    sut.a.b.on('change:c', (e) => {
+      assert.equal(e.value, 5);
+      done();
+    });
+
+    sut.a.b.c = 5;
+  });
 });
