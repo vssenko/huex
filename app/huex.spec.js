@@ -86,4 +86,32 @@ describe('Huex', () => {
 
     sut.someArray.push(4);
   });
+
+  it('should fire parent event on child object change', (done) => {
+    sut.subSut = {
+      a: 5
+    };
+
+    sut.on('change:subSut', (e) => {
+      assert.equal(e.key, 'subSut');
+      assert.deepEqual(e.value._storage, { a: 10 });
+      assert.deepEqual(e.nested, { key: 'a', value: 10 });
+      done();
+    });
+
+    sut.subSut.a = 10;
+  });
+
+  it('should fire parent event on child array change', (done) => {
+    sut.subSut = [1, 2, 3]
+
+    sut.on('change:subSut', (e) => {
+      assert.equal(e.key, 'subSut');
+      assert.deepEqual(e.value._storage, [1, 2, 3, 4]);
+      assert.deepEqual(e.nested, { key: '3', value: 4 });
+      done();
+    });
+
+    sut.subSut.push(4);
+  });
 });
