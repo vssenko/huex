@@ -76,15 +76,13 @@ describe('Huex', () => {
     sut.subSut.a = 10;
   });
 
-  xit('should listen on array changes', (done) => {
+  it('should listen on array changes', (done) => {
     sut.someArray = [1, 2, 3];
     sut.someArray.on('change', (e) => {
-      if (e.key === 3 && e.value === 4) {
+      if (e.key === '3' && e.value === 4) {
         done();
       }
     });
-
-    console.log(sut.someArray);
 
     sut.someArray.push(4);
   });
