@@ -1,9 +1,13 @@
 const HuexStorage = require('./huex-storage');
 const recursiveWalker = require('./recursive-walker');
 
+function _isHuexOwnProp(prop) {
+  return ['on', '_storage', '_emitter', '_emitChange'].includes(prop);
+}
+
 const proxySettings = {
   get(target, prop) {
-    if (['on', '_storage', '_emitter'].includes(prop)) {
+    if (_isHuexOwnProp(prop)) {
       return target[prop];
     }
     target = target._storage;
@@ -14,19 +18,18 @@ const proxySettings = {
   },
 
   set(target, prop, value) {
-    const emitter = target._emitter;
-    target = target._storage;
-    if (value) {
-      if (Array.isArray(value)) {
-        value = recursiveWalker.walkThroughArray(value, val => huex(val));
-      } else if (typeof value === 'object') {
-        value = recursiveWalker.walkThroughObject(value, val => huex(val));
-      }
+    const storage = target._storage;
+    value = recursiveWalker.walkThroughValue(value, val => huex(val));
+
+    storage[prop] = value;
+    target._emitChange(prop, value);
+
+    if (value instanceof HuexStorage) {
+      value.on('change', (e) => {
+        target._emitChange(prop, storage[prop], { nested: e });
+      });
     }
 
-    target[prop] = value;
-    emitter.emit('change:' + prop, { value });
-    emitter.emit('change', { key: prop, value })
     return true;
   }
 }

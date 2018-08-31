@@ -1,11 +1,7 @@
 function walkThroughObject(obj, applyfunc) {
   Object.keys(obj).filter(k => obj[k]).forEach((key) => {
     const value = obj[key];
-    if (Array.isArray(value)) {
-      obj[key] = walkThroughArray(value, applyfunc);
-    } else if (typeof value === 'object') {
-      obj[key] = walkThroughObject(value, applyfunc);
-    }
+    obj[key] = walkThroughValue(value, applyfunc);
   });
 
   return applyfunc(obj);
@@ -13,16 +9,25 @@ function walkThroughObject(obj, applyfunc) {
 
 function walkThroughArray(array, applyfunc) {
   array.forEach((value, ind) => {
-    if (Array.isArray(value)) {
-      array[ind] = walkThroughArray(value, applyfunc);
-    } else if (typeof value === 'object') {
-      array[ind] = walkThroughObject(value, applyfunc);
-    }
+    array[ind] = walkThroughValue(value, applyfunc);
   });
 
   return applyfunc(array);
 }
+
+function walkThroughValue(value, applyFunc) {
+  if (!value) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    value = walkThroughArray(value, applyFunc);
+  } else if (typeof value === 'object') {
+    value = walkThroughObject(value, applyFunc);
+  }
+
+  return value;
+}
+
 module.exports = {
-  walkThroughObject,
-  walkThroughArray
+  walkThroughValue
 }
