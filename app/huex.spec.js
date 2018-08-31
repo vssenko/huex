@@ -51,4 +51,39 @@ describe('Huex', () => {
 
     sut.a.b.c = 5;
   });
+
+  it('should be created based on existing object', (done) => {
+    const sut = Huex({ a: 5 });
+
+    sut.on('change:a', (e) => {
+      assert.equal(e.value, 10);
+      done();
+    });
+
+    assert.equal(sut.a, 5);
+    sut.a = 10;
+
+  });
+
+  it('should make an object Huex on set', (done) => {
+    sut.subSut = {
+      a: 5
+    };
+
+    sut.subSut.on('change:a', () => done());
+
+    assert.equal(sut.subSut.a, 5);
+    sut.subSut.a = 10;
+  });
+
+  it('should listen on array changes', (done) => {
+    sut.someArray = [1, 2, 3];
+    sut.someArray.on('change', (e) => {
+      if (e.key === '3' && e.value === 4) {
+        done();
+      }
+    });
+
+    sut.someArray.push(4);
+  });
 });
