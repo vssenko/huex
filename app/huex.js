@@ -1,4 +1,5 @@
 const EventEmmiter = require('events').EventEmitter;
+const recursiveWalker = require('./recursive-walker');
 
 const proxySettings = {
   get(target, prop) {
@@ -9,6 +10,14 @@ const proxySettings = {
   },
 
   set(target, prop, value) {
+    if (value) {
+      if (Array.isArray(value)) {
+        value = recursiveWalker.walkThroughArray(value, val => huex(val));
+      } else if (typeof value === 'object') {
+        value = recursiveWalker.walkThroughObject(value, val => huex(val));
+      }
+    }
+
     target[prop] = value;
     target.emit('change:' + prop, { value });
     target.emit('change', { key: prop, value })
@@ -16,8 +25,8 @@ const proxySettings = {
   }
 }
 
-function huex() {
-  obj = new EventEmmiter();
+function huex(obj = {}) {
+  Object.setPrototypeOf(obj, new EventEmmiter());
   const storage = new Proxy(obj, proxySettings);
   return storage;
 }

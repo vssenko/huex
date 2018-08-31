@@ -20,5 +20,9 @@ function walkThroughArray(array, applyfunc) {
     }
   });
 
-  return array;
+  return applyfunc(array);
+}
+module.exports = {
+  walkThroughObject,
+  walkThroughArray
 }
