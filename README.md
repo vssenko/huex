@@ -4,7 +4,7 @@ Super slim and easy data storage. Like Redux\Vuex, but with ease. Written just f
 
 ## Getting Started
 
-All you need in Node
+All you need is Node
 
 ### Installing
 
